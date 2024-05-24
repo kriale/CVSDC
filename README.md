@@ -1,2 +1,2 @@
 # CVSDC
-Mag2022: Computer Vision Social Distance Control
+Computer Vision Social Distance Control
