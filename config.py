@@ -10,9 +10,9 @@ RESOURCES_DIR_PATH = os.path.join(BASE_DIR, 'resources')
 
 # TownCentre
 TOWNCENTRE_DATASET_PATH = os.path.join(DATASETS_PATH, 'TownCentre')
-GROUNDTRUTH_FILE_PATH = os.path.join(DATASETS_PATH, 'TownCentre-groundtruth.top')
-CAMERA_PARAMETERS_FILE_PATH = os.path.join(DATASETS_PATH, 'TownCentre-calibration.ci')
-VIDEO_PATH = os.path.join(DATASETS_PATH, 'TownCentreXVID.mp4')
+GROUNDTRUTH_FILE_PATH = os.path.join(TOWNCENTRE_DATASET_PATH, 'TownCentre-groundtruth.top')
+CAMERA_PARAMETERS_FILE_PATH = os.path.join(TOWNCENTRE_DATASET_PATH, 'TownCentre-calibration.ci')
+VIDEO_PATH = os.path.join(TOWNCENTRE_DATASET_PATH, 'TownCentreXVID.mp4')
 
 # YOLO
 YOLO_DIR_PATH = os.path.join(RESOURCES_DIR_PATH, 'yolo')
