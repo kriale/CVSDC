@@ -1,6 +1,8 @@
 import numpy as np
 import supervision as sv
 
+FILE_STRUCTURE = 'frame_index,tracker_id,x1,y1,x2,y2,bdcx,bdcy,mask'
+
 
 class DetectionUtils:
     @staticmethod
@@ -31,3 +33,27 @@ class DetectionUtils:
                 xyxy=np.array([[x1, y1, x2, y2] for tracker_id, x1, y1, x2, y2, bdcx, bdcy, mask in row_detections]),
                 tracker_id=np.array([tracker_id for tracker_id, x1, y1, x2, y2, bdcx, bdcy, mask in row_detections])
             )
+
+    @staticmethod
+    def write_predictions_dict(predictions_dict: dict, file_path) -> None:
+        with open(file_path, 'w') as f:
+            f.write(FILE_STRUCTURE + '\n')
+            for frame_index, detections in predictions_dict.items():
+                for detection in detections:
+                    f.write(str(frame_index) + ',' + ','.join(map(str, detection)) + '\n')
+
+    @staticmethod
+    def read_predictions_dict(file_path) -> dict:
+        predictions_dict = {}
+        with open(file_path, 'r') as f:
+            file_structure = f.readline().strip()
+            if file_structure != FILE_STRUCTURE:
+                raise ValueError(
+                    f'Unexpected file structure: {file_structure}. Expected: {FILE_STRUCTURE}')
+            for line in f:
+                frame_index, *detection = map(float, line.strip().split(','))
+                frame_index = int(frame_index)
+                if frame_index not in predictions_dict:
+                    predictions_dict[frame_index] = []
+                predictions_dict[frame_index].append(tuple(detection))
+        return predictions_dict

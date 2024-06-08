@@ -1,4 +1,6 @@
 import unittest
+from unittest.mock import patch, mock_open
+
 import numpy as np
 import supervision as sv
 
@@ -31,6 +33,21 @@ class DetectionUtilsTest(unittest.TestCase):
         actual = self.detectionUtils.convert_detections_from_row_to_sv(self.row_detections)
         self.assertEqual(actual.xyxy.tolist(), expected.xyxy.tolist())
         self.assertEqual(actual.tracker_id.tolist(), expected.tracker_id.tolist())
+
+    @patch('builtins.open', new_callable=mock_open,
+           read_data="frame_index,tracker_id,x1,y1,x2,y2,bdcx,bdcy,mask\n5,19,6.0,7.0,8.0,9.0,3.0,2.0,0.0\n")
+    def test_read_predictions_dict(self, mock_file):
+        expected_output = {5: [(19, 6.0, 7.0, 8.0, 9.0, 3.0, 2.0, 0)]}
+        result = DetectionUtils.read_predictions_dict('dummy_path')
+        self.assertEqual(result, expected_output)
+
+    @patch('builtins.open', new_callable=mock_open)
+    def test_write_predictions_dict(self, mock_file):
+        predictions_dict = {5: [(19, 6.0, 7.0, 8.0, 9.0, 3.0, 2.0, 0)]}
+        DetectionUtils.write_predictions_dict(predictions_dict, 'dummy_path')
+        mock_file.assert_called_once_with('dummy_path', 'w')
+        mock_file().write.assert_any_call("frame_index,tracker_id,x1,y1,x2,y2,bdcx,bdcy,mask\n")
+        mock_file().write.assert_any_call("5,19,6.0,7.0,8.0,9.0,3.0,2.0,0\n")
 
 
 if __name__ == '__main__':
