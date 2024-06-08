@@ -5,10 +5,11 @@ from src.service.byte_track_yolo_tracker import ByteTrackYOLOTracker
 from src.service.towncentre_video_service import TowncentreVideoService
 from src.utils.detection_utils import DetectionUtils
 
-"""
-This function performs the tracking algorithm on the dataset and stores the result predicted detections in the file
-"""
+
 def log(frames_limit=None):
+    """
+    This function performs the tracking algorithm on the dataset and stores the result predicted detections in the file
+    """
     pred_detections_dict = dict()
     dataset_service = TowncentreVideoService()
     dataset_video_path = dataset_service.get_video_path()
