@@ -3,7 +3,6 @@ import supervision as sv
 from ultralytics import YOLO
 
 from config import YOLO_V8_N_PATH
-from src.utils.detection_utils import DetectionUtils
 
 DEFAULT_YOLO_MODEL_PATH = YOLO_V8_N_PATH
 DEFAULT_BYTETRACK_PARAMS = {
@@ -34,16 +33,11 @@ class ByteTrackYOLOTracker:
             frame_rate=bytetrack_params['frame_rate'],
         )
         self.__selected_classes = [0]  # pedestrians only
-        self.__pred_detections_dict = dict()
 
     def update_tracker(self, frame, frame_index) -> sv.Detections:
         sv_detections = self.__detect(frame)
         sv_detections = self.__byte_tracker.update_with_detections(sv_detections)
-        self.__pred_detections_dict[frame_index] = DetectionUtils.convert_detections_from_sv_to_row(sv_detections)
         return sv_detections
-
-    def get_pred_detections(self):
-        return self.__pred_detections_dict
 
     # ============= Private methods =============
 
