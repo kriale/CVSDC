@@ -27,7 +27,12 @@ class ByteTrackYOLOTracker:
             bytetrack_params = DEFAULT_BYTETRACK_PARAMS
 
         self.__detection_model = YOLO(yolo_model_path)
-        self.__byte_tracker = sv.ByteTrack(*bytetrack_params)
+        self.__byte_tracker = sv.ByteTrack(
+            track_thresh=bytetrack_params['track_thresh'],
+            track_buffer=bytetrack_params['track_buffer'],
+            match_thresh=bytetrack_params['match_thresh'],
+            frame_rate=bytetrack_params['frame_rate'],
+        )
         self.__selected_classes = [0]  # pedestrians only
         self.__pred_detections_dict = dict()
 
