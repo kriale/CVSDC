@@ -5,12 +5,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Main directories
 DATASETS_PATH = os.path.join(BASE_DIR, 'datasets')
-DEMO_DIR_PATH = os.path.join(BASE_DIR, 'demo')
+RESULTS_DIR_PATH = os.path.join(BASE_DIR, 'results')
 RESOURCES_DIR_PATH = os.path.join(BASE_DIR, 'resources')
 
 # TownCentre
 TOWNCENTRE_DATASET_PATH = os.path.join(DATASETS_PATH, 'TownCentre')
 GROUNDTRUTH_FILE_PATH = os.path.join(TOWNCENTRE_DATASET_PATH, 'TownCentre-groundtruth.top')
+PREDICTIONS_FILE_PATH = os.path.join(RESULTS_DIR_PATH, 'TownCentre-predictions.top')
 CAMERA_PARAMETERS_FILE_PATH = os.path.join(TOWNCENTRE_DATASET_PATH, 'TownCentre-calibration.ci')
 VIDEO_PATH = os.path.join(TOWNCENTRE_DATASET_PATH, 'TownCentreXVID.mp4')
 

@@ -133,4 +133,4 @@ dmypy.json
 
 # Data directories
 datasets/
-demo/
+results/
