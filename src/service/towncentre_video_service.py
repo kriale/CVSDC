@@ -23,9 +23,11 @@ class TowncentreVideoService(DatasetVideoService):
                 y1 = float(row[9])
                 x2 = float(row[10])
                 y2 = float(row[11])
+                class_id = 0
+                confidence = 1
                 if frame_id not in groundtruth_dict:
                     groundtruth_dict[frame_id] = []
-                groundtruth_dict[frame_id].append((object_id, x1, y1, x2, y2, (x1 + x2) / 2, y2, 0))
+                groundtruth_dict[frame_id].append((object_id, x1, y1, x2, y2, (x1 + x2) / 2, y2, class_id, confidence))
         return groundtruth_dict
 
     def load_camera_parameters(self) -> dict:

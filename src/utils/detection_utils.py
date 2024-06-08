@@ -1,7 +1,7 @@
 import numpy as np
 import supervision as sv
 
-FILE_STRUCTURE = 'frame_index,tracker_id,x1,y1,x2,y2,bdcx,bdcy,mask'
+FILE_STRUCTURE = 'frame_index,tracker_id,x1,y1,x2,y2,bdcx,bdcy,class_id,confidence'
 
 
 class DetectionUtils:
@@ -9,9 +9,9 @@ class DetectionUtils:
     def convert_detections_from_sv_to_row(sv_detections: sv.Detections) -> []:
         return [
             (int(tracker_id), detection[0], detection[1], detection[2], detection[3],
-             (detection[0] + detection[2]) / 2, detection[3], 0)
-            for detection, tracker_id
-            in zip(sv_detections.xyxy, sv_detections.tracker_id)
+             (detection[0] + detection[2]) / 2, detection[3], class_id, confidence)
+            for detection, tracker_id, confidence, class_id
+            in zip(sv_detections.xyxy, sv_detections.tracker_id, sv_detections.confidence, sv_detections.class_id)
         ]
 
     @staticmethod
@@ -26,12 +26,16 @@ class DetectionUtils:
         if len(row_detections) == 0:
             return sv.Detections(
                 xyxy=np.empty((0, 4)),
+                confidence=np.empty(0),
                 tracker_id=np.empty(0),
+                class_id=np.empty(0),
             )
         else:
             return sv.Detections(
-                xyxy=np.array([[x1, y1, x2, y2] for tracker_id, x1, y1, x2, y2, bdcx, bdcy, mask in row_detections]),
-                tracker_id=np.array([tracker_id for tracker_id, x1, y1, x2, y2, bdcx, bdcy, mask in row_detections])
+                xyxy=np.array([[x1, y1, x2, y2] for tracker_id, x1, y1, x2, y2, bdcx, bdcy, class_id, confidence in row_detections]),
+                confidence=np.array([class_id for tracker_id, x1, y1, x2, y2, bdcx, bdcy, class_id, confidence in row_detections]),
+                tracker_id=np.array([tracker_id for tracker_id, x1, y1, x2, y2, bdcx, bdcy, class_id, confidence in row_detections]),
+                class_id=np.array([class_id for tracker_id, x1, y1, x2, y2, bdcx, bdcy, class_id, confidence in row_detections])
             )
 
     @staticmethod
