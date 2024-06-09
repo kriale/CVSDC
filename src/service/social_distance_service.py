@@ -40,6 +40,9 @@ class DistanceMatrix:
         :param id2: The ID of the second object.
         :return: The distance between the two objects.
         """
+        if (id1 not in self.id_index_map.keys()) or (id2 not in self.id_index_map.keys()):
+            return None
+
         index1 = self.id_index_map[id1]
         index2 = self.id_index_map[id2]
 
@@ -130,6 +133,12 @@ class SocialDistanceService:
         :return: The distance matrix for the frame.
         """
         return self.__distance_matrix_history[frame_index]
+
+    def get_all_current_violators_set(self, frame_index: int) -> set:
+        return self.__compute_violator_set(self.get_all_current_violation_pairs(frame_index))
+
+    def get_new_current_violators_set(self, frame_index: int) -> set:
+        return self.__compute_violator_set(self.get_new_current_violation_pairs(frame_index))
 
     # =================== Private methods ===================
 
