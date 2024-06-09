@@ -61,3 +61,14 @@ class DetectionUtils:
                     predictions_dict[frame_index] = []
                 predictions_dict[frame_index].append(tuple(detection))
         return predictions_dict
+
+    @staticmethod
+    def filter_detections_by_tracker_ids(sv_detections: sv.Detections, tracker_ids):
+        indices = [i for i, tracker_id in enumerate(sv_detections.tracker_id) if tracker_id in tracker_ids]
+        return sv.Detections(
+            xyxy=sv_detections.xyxy[indices],
+            mask=sv_detections.mask[indices] if sv_detections.mask is not None else None,
+            confidence=sv_detections.confidence[indices] if sv_detections.confidence is not None else None,
+            class_id=sv_detections.class_id[indices] if sv_detections.class_id is not None else None,
+            tracker_id=sv_detections.tracker_id[indices] if sv_detections.tracker_id is not None else None
+        )
