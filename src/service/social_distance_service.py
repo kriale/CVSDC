@@ -45,6 +45,8 @@ class DistanceMatrix:
 
         index1 = self.id_index_map[id1]
         index2 = self.id_index_map[id2]
+        if index1 > index2:
+            index1, index2 = index2, index1
 
         return self.matrix[index1, index2]
 
@@ -103,6 +105,15 @@ class SocialDistanceService:
         new_curr_violation_pairs = self.get_new_current_violation_pairs(frame_index)
 
         return all_curr_violation_pairs, new_curr_violation_pairs
+
+    def get_distance_for_pair(self, frame_index: int, pair: ()) -> float:
+        """
+        Get the distance between the two people in the given pair for the given frame index.
+        :param frame_index: The index of the frame.
+        :param pair: The pair of people - their object IDs.
+        :return:
+        """
+        return self.get_distance_matrix(frame_index).get_distance(pair[0], pair[1])
 
     def get_all_current_violation_pairs(self, frame_index: int) -> set:
         """
